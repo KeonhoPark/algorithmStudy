@@ -1,7 +1,8 @@
 n = int(input())
 m = int(input())
+INF = int(1e9)
 
-dis = [[100001 for i in range(n)] for j in range(n)]
+dis = [[INF for i in range(n)] for j in range(n)]
 for i in range(n):
     dis[i][i] = 0
 
@@ -13,11 +14,14 @@ for i in range(m):
 for k in range(n):
     for i in range(n):
         for j in range(n):
-            dis[i][j] = min(dis[i][k] + dis[k][j], dis[i][j])
+            if i == j:
+                dis[i][j] = 0
+            else:
+                dis[i][j] = min(dis[i][k] + dis[k][j], dis[i][j])
 
 for i in range(n):
     for j in range(n):
-        if dis[i][j] == 100001:
+        if dis[i][j] == INF:
             print(0, end=" ")
         else:
             print(dis[i][j], end=" ")
