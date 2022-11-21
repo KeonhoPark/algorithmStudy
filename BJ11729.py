@@ -1,14 +1,15 @@
-k = int(input())
-count = 0
+n = int(input())
 
-def hanoi(k, start, end):
-    if k == 1:
+
+def hanoi(n, start, end):
+    if n == 1:
         print(start, end)
         return
 
-    hanoi(k-1, start, 6-start-end)
+    hanoi(n-1, start, 6-start-end)
     print(start, end)
-    hanoi(k-1, 6-start-end, end)
+    hanoi(n-1, 6-start-end, end)
 
 
-hanoi(k, 1, 3)
+print(2 ** n - 1)
+hanoi(n, 1, 3)
