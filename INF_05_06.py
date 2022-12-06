@@ -1,36 +1,20 @@
 from collections import deque
 
 n, m = map(int, input().split())
-data = deque((map(int, input().split())))
+data = [x for x in enumerate(list(map(int, input().split())))]
+data = deque(data)
 
-index = m
-count = 1
+count = 0
 while len(data) > 0:
-    max = 0
-    first = data[0]
-    if index == n:
-        index -= n
+    first = data.popleft()
 
-    for i in range(1, len(data)):
-        if data[i] > max:
-            max = data[i]
-
-    if first < max:
-        data.popleft()
+    if any(first[1] < d[1] for d in data):
         data.append(first)
-        if index == 0:
-            index = len(data)-1
-        else:
-            index -= 1
 
     else:
-        data.popleft()
-        if index == 0:
+        count += 1
+        if first[0] == m:
             break
-        else:
-            count += 1
-            index -= 1
-
 
 print(count)
 
