@@ -12,8 +12,12 @@ while True:
     else:
         heapq.heappush(min_heap, n)
 
-for x in res:
-    print(x)
+if len(res) == 0:
+    print(-1)
+else:
+    for x in res:
+        print(x)
+
 
 ans = list()
 while True:
