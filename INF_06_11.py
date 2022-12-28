@@ -9,28 +9,23 @@ for x in data:
     flag[x] = 0
 
 
-def dfs(root):
+def dfs(root, parent):
     global count
     if root == k:
-        if sum(res) < m:
+        if sum(res) % m != 0:
             return
         else:
-            for i in range(len(res)-1):
-                if res[i] > res[i + 1]:
-                    break
-            else:
-                if sum(res) % m == 0 and res[i] < res[i+1]:
-                    count += 1
+            count += 1
             return
     else:
         for d in data:
-            if flag[d] == 0:
+            if flag[d] == 0 and d > parent:
                 flag[d] = 1
                 res[root] = d
-                dfs(root + 1)
+                dfs(root + 1, d)
                 flag[d] = 0
 
 
 if __name__ == "__main__":
-    dfs(0)
+    dfs(0, 0)
     print(count)
