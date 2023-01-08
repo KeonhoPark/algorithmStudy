@@ -5,7 +5,7 @@ count = 0
 for i in range(1, n+1):
     data[i] = list(map(int, input().split()))
     data[i].append(0)
-    data[i] = [0] + data[i]
+    data[i].insert(0, 0)
 
 for i in range(1, n+1):
     for j in range(1, n+1):
@@ -13,3 +13,6 @@ for i in range(1, n+1):
             count += 1
 
 print(count)
+
+for i in range(n+2):
+    print(data[i])
