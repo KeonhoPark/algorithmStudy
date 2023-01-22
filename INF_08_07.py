@@ -16,6 +16,8 @@ for i in range(n):
             m_idx = j
     dp[i] += m
 
+print(brick)
+print(dp)
 print(max(dp))
 
 
