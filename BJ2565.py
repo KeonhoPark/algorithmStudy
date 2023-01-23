@@ -19,3 +19,4 @@ for i in range(1, m+1):
         dp[i] = mx + 1
 
 print(n - max(dp))
+
