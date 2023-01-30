@@ -22,20 +22,14 @@ def dfs(y, x, n):
             dfs(y + new_n, x, new_n)
             dfs(y + new_n, x + new_n, new_n)
             res.append(')')
-
-
         else:
             res.append(c)
 
 
-
-
 def check(y, x, n):
     s = 0
-    for i in range(y, y+n):
-        s += sum(data[i][x:x+n])
-
-    # print(s)
+    for i in range(y, y + n):
+        s += sum(data[i][x:x + n])
 
     if s == 0:
         return 0
@@ -47,5 +41,3 @@ def check(y, x, n):
 
 dfs(0, 0, n)
 print(*res, sep="")
-
-
