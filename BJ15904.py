@@ -17,11 +17,7 @@ for r in res:
     if r == 'C' and flag[2] == 1:
         flag[3] = 1
 
-
 if sum(flag) == 4:
     print("I love UCPC")
 else:
     print("I hate UCPC")
-
-
-
