@@ -21,6 +21,7 @@ while True:
                 else:
                     flag = 1
                     break
+
             elif s == ']':
                 if len(stack) != 0:
                     if stack[-1] == '[':
