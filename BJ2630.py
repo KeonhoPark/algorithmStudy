@@ -2,6 +2,7 @@ n = int(input())
 paper = [[0]] * n
 blue = 0
 white = 0
+
 for k in range(n):
     paper[k] = list(map(int, input().split()))
 
