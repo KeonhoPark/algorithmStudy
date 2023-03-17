@@ -1,19 +1,35 @@
-n, t, s = map(int, input().split())
-item = list(map(int, input().split()))
-count = 0
+import sys
 
+n, t, s = map(int, sys.stdin.readline().split())
+item = list(map(int, sys.stdin.readline().split()))
 item.sort()
 
+start = 0
+end = 0
+total = 0
+
 for i in range(len(item)):
-    if t - item[i] <= 0:
-        if t - (item[i] / 2) >= 0:
-            t -= item[i] / 2
-            count += 1
-        else:
-            break
-    else:
-        t -= item[i]
-        count += 1
+    if end - start < s:
+        item[end] //= 2
+        total += item[end]
+        end += 1
 
+    elif end - start == s:
+        item[end] //= 2
+        total += (item[end] + item[start])
+        item[start] *= 2
+        end += 1
+        start += 1
 
-print(count)
+    # print(item)
+    # print(total)
+
+    if total > t:
+        print(i)
+        break
+    elif total == t:
+        print(i + 1)
+        break
+
+else:
+    print(i + 1)
