@@ -2,7 +2,8 @@ import sys
 
 n = int(input())
 data = list(map(int, sys.stdin.readline().split()))
-res = [0]
+MAX = sys.maxsize
+res = [-MAX]
 
 
 def find_place(x):
@@ -27,3 +28,4 @@ for i in range(len(data)):
         res[find_place(data[i])] = data[i]
 
 print(len(res) - 1)
+print(*res[1:])
