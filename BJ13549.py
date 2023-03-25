@@ -10,6 +10,7 @@ def djikstra(s):
 
     while q:
         time, cur_pos = heapq.heappop(q)
+        print(time, cur_pos)
         if cur_pos == e:
             return res[cur_pos]
 
