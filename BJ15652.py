@@ -12,7 +12,4 @@ def dfs(l, s):
             dfs(l + 1, i)
 
 
-
 dfs(0, 1)
-
-
