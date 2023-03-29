@@ -27,7 +27,6 @@ def dfs(l, s):
                 l_score += data[i][j]
 
         res = min(res, abs(s_score - l_score))
-        print(start)
         return
     else:
         for i in range(s, n):
