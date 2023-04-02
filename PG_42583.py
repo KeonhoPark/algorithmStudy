@@ -36,3 +36,6 @@ def solution(bridge_length, weight, trucks):
 
 if __name__ == "__main__":
     solution(3, 10, [4, 5, 6, 7])
+    tmp = [4, 4, 5, 6, 7]
+    tmp.remove(4)
+    print(tmp)
