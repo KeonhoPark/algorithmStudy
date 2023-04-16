@@ -1,3 +1,5 @@
+
+
 def solution(array, commands):
     answer = []
 
