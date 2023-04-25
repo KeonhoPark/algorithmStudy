@@ -2,33 +2,23 @@ from collections import deque
 
 
 def solution(game_board, table):
-    blank = list()
-    blank_dir = list()
-    puzzle = list()
-    puzzle_dir = list()
+    res = 0
 
-    def cluster(matrix, flag, t):
+    def table_cluster(graph):
+        s = len(graph)
+        visited = [[0 for _ in range(s)] for _ in range(s)]
+        dx = [1, 0, -1, 0]
+        dy = [0, 1, 0, -1]
+        res_list = list()
 
-        e = 0
-        if t == 0:
-            e = 1
-
-        dx = [0, 1, 0, -1]
-        dy = [1, 0, -1, 0]
-        directions = ['d', 'r', 'u', 'l']
-
-        row = len(matrix[0])
-        col = len(matrix)
-
-        for i in range(col):
-            for j in range(row):
-                if matrix[i][j] == t:
-                    dir_list = list()
+        for i in range(s):
+            for j in range(s):
+                if graph[i][j] == 1 and visited[i][j] == 0:
                     q = deque()
+                    cor_list = list()
                     q.append([i, j])
-                    dir_list.append([i, j])
-                    matrix[i][j] = e
-
+                    cor_list.append([i, j])
+                    visited[i][j] = 1
                     while q:
                         cor = q.popleft()
                         y = cor[0]
@@ -37,118 +27,107 @@ def solution(game_board, table):
                         for k in range(4):
                             new_y = y + dy[k]
                             new_x = x + dx[k]
-
-                            if 0 <= new_y < col and 0 <= new_x < row and matrix[new_y][new_x] == t:
+                            if 0 <= new_y < s and 0 <= new_x < s and graph[new_y][new_x] == 1 and visited[new_y][
+                                new_x] == 0:
                                 q.append([new_y, new_x])
-                                dir_list.append([new_y, new_x, directions[k]])
-                                matrix[new_y][new_x] = e
+                                visited[new_y][new_x] = 1
+                                cor_list.append([new_y, new_x])
 
-                    if flag == 0:
-                        blank.append(dir_list)
-                    else:
-                        puzzle.append(dir_list)
+                    res_list.append(cor_list)
 
-    def get_dir(points):
-        dir_list = list()
+        return res_list
 
-        for p in points:
-            d = list()
-            tmp = points.copy()
-            tmp.remove(p)
-            visited = [0 for _ in range(len(tmp))]
+    def board_cluster(graph):
+        s = len(graph)
+        visited = [[0 for _ in range(s)] for _ in range(s)]
+        dx = [1, 0, -1, 0]
+        dy = [0, 1, 0, -1]
+        res_list = list()
 
-            q = deque()
-            q.append(p)
+        for i in range(s):
+            for j in range(s):
+                if graph[i][j] == 0 and visited[i][j] == 0:
+                    q = deque()
+                    cor_list = list()
+                    q.append([i, j])
+                    cor_list.append([i, j])
+                    visited[i][j] = 1
+                    while q:
+                        cor = q.popleft()
+                        y = cor[0]
+                        x = cor[1]
 
-            while q:
-                cor = q.popleft()
-                y = cor[0]
-                x = cor[1]
-                for i in range(len(tmp)):
-                    if visited[i] == 0 and y == tmp[i][0] - 1 and x == tmp[i][1]:
-                        d.append('d')
-                        q.append([tmp[i][0], tmp[i][1]])
-                        visited[i] = 1
-                    elif visited[i] == 0 and y == tmp[i][0] and x == tmp[i][1] - 1:
-                        d.append('r')
-                        q.append([tmp[i][0], tmp[i][1]])
-                        visited[i] = 1
-                    elif visited[i] == 0 and y == tmp[i][0] + 1 and x == tmp[i][1]:
-                        d.append('u')
-                        q.append([tmp[i][0], tmp[i][1]])
-                        visited[i] = 1
-                    elif visited[i] == 0 and y == tmp[i][0] and x == tmp[i][1] + 1:
-                        d.append('l')
-                        q.append([tmp[i][0], tmp[i][1]])
-                        visited[i] = 1
+                        for k in range(4):
+                            new_y = y + dy[k]
+                            new_x = x + dx[k]
+                            if 0 <= new_y < s and 0 <= new_x < s and graph[new_y][new_x] == 0 and visited[new_y][
+                                new_x] == 0:
+                                q.append([new_y, new_x])
+                                visited[new_y][new_x] = 1
+                                cor_list.append([new_y, new_x])
 
-            d.sort()
-            dir_list.append(d)
-            dir_list.sort()
+                    res_list.append(cor_list)
 
-        return dir_list
+        return res_list
 
-    def right(direction_list):
-        for directions in direction_list:
-            for i in range(len(directions)):
-                if directions[i] == 'd':
-                    directions[i] = 'l'
-                elif directions[i] == 'l':
-                    directions[i] = 'u'
-                elif directions[i] == 'u':
-                    directions[i] = 'r'
-                else:
-                    directions[i] = 'd'
+    def rotate(graph):
+        s = len(graph)
+        r_graph = [[] for _ in range(s)]
 
-            directions.sort()
+        for i in range(s):
+            tmp = list()
+            for j in range(s - 1, -1, -1):
+                tmp.append(graph[j][i])
+            r_graph[i] = tmp
 
-        direction_list.sort()
+        return r_graph
 
-    def count(blank_dir, puzzle_dir):
+    def count(blanks, puzzles):
         count = 0
+        filled_blanks = list()
 
-        for p in puzzle_dir:
-            if p in blank_dir:
-                # print("1", p)
-                # print(blank_dir.index(p))
-                count += (len(p[0]) + 1)
-                blank_dir.pop(blank_dir.index(p))
-            else:
-                for i in range(3):
-                    right(p)
-                    # print("r", p)
-                    if p in blank_dir:
-                        # print("=", p)
-                        # print(blank_dir.index(p))
-                        count += (len(p[0]) + 1)
-                        blank_dir.pop(blank_dir.index(p))
-                        break
+        for b in blanks:
+            flag = 0
+            sorted_b = sorted(b)
+            for p in puzzles[::]:
+                sorted_p = sorted(p)
+                if len(b) == len(p) and flag == 0:
+                    y_diff = sorted_b[0][0] - sorted_p[0][0]
+                    x_diff = sorted_b[0][1] - sorted_p[0][1]
 
-        return count
+                    for i in range(len(sorted_p)):
+                        new_cor = [sorted_p[i][0] + y_diff, sorted_p[i][1] + x_diff]
+                        if new_cor != sorted_b[i]:
+                            break
 
-    # for g in game_board:
-    #     print(g)
-    # print()
-    # for t in table:
-    #     print(t)
-    cluster(game_board, 0, 0)
-    cluster(table, 1, 1)
-    for p in puzzle:
-        puzzle_dir.append(get_dir(p))
-    for b in blank:
-        blank_dir.append(get_dir(b))
+                    else:
+                        count += len(p)
+                        puzzles.remove(p)
+                        flag = 1
+                        if b not in filled_blanks:
+                            filled_blanks.append(b)
 
-    # print("blank")
-    # for i in range(len(blank_dir)):
-    #     print(blank_dir[i])
+        return count, filled_blanks, puzzles
 
-    #     print("puzzle_dir")
-    #     for i in range(len(puzzle_dir)):
-    #         print(puzzle_dir[i])
+    def fill_blanks(board, blanks):
 
-    #     print()
-    # print(count(blank_dir, puzzle_dir))
-    return count(blank_dir, puzzle_dir)
+        for b in blanks:
+            for cor in b:
+                board[cor[0]][cor[1]] = 1
+
+        return board
+
+    puzzles = table_cluster(table)
+
+    for _ in range(4):
+        blanks = board_cluster(game_board)
+        c, f_b, p = count(blanks, puzzles)
+        res += c
+        puzzles = p
+        game_board = fill_blanks(game_board, f_b)
+        game_board = rotate(game_board)
+
+    return res
+
 
 solution([[1, 1, 0, 0, 1, 0], [0, 0, 1, 0, 1, 0], [0, 1, 1, 0, 0, 1], [1, 1, 0, 1, 1, 1], [1, 0, 0, 0, 1, 0], [0, 1, 1, 1, 0, 0]], [[1, 0, 0, 1, 1, 0], [1, 0, 1, 0, 1, 0], [0, 0, 1, 0, 1, 1], [0, 1, 1, 0, 0, 0], [1, 1, 0, 1, 1, 0], [0, 1, 0, 0, 0, 0]])
-#solution([[0, 0, 0], [1, 1, 0], [1, 1, 1]], [[1, 1, 1], [1, 0, 0], [0, 0, 0]])
